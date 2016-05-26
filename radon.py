@@ -13,6 +13,7 @@ import read_segy
 import variables
 import numpy as np
 import pdb
+import lmo
 
 # Backing pixmap for drawing area
 pixmap = None
@@ -214,6 +215,14 @@ def on_buttonSlantStack_clicked(widget):
 
     Section = Section
     Offset = Offset
+    '''
+    p =(1.0/1500)
+    SectionLMO = lmo.gat_lmo(Section,Offset,p,dt)
+    SectionTauPi = SectionLMO.T
+    '''
+    p = np.linspace(0, 1.0/1000, num=nt)
+    SectionTauPi = lmo.stkgat_lmo(Section,Offset,p,dt)
+    SectionTauPi = SectionTauPi.T
 
     # Aqui empiezas a programar la transformacion del CDP(tiempo, offset) a
     # CDP(tau,pi) --slantstack--. La NumpyMatrix que contiene el CDP(tau,pi)
@@ -258,14 +267,15 @@ def main():
     labelfile.show()
     main.tablePar.attach(labelfile, 0, 4, 1, 2)
     main.entryFileIn = gtk.Entry()
-    main.entryFileIn.set_text("CDP_501m_66fold_Iln305_Xln101_2001_dt4ms.sgy")
+    #main.entryFileIn.set_text("CDP_501m_66fold_Iln305_Xln101_2001_dt4ms.sgy")
+    main.entryFileIn.set_text("CDPNMOSyn200t_801m.sgy")
     main.entryFileIn.show()
     main.tablePar.attach(main.entryFileIn, 0, 4, 2, 3)
 
     labelfold = gtk.Label("Fold: ")
     labelfold.show()
     main.entryFold = gtk.Entry()
-    main.entryFold.set_text("66")
+    main.entryFold.set_text("200")
     main.entryFold.show()
     main.tablePar.attach(labelfold, 0, 2, 3, 4)
     main.tablePar.attach(main.entryFold, 2, 4, 3, 4)
@@ -273,7 +283,7 @@ def main():
     labelrecord = gtk.Label("CDP: ")
     labelrecord.show()
     main.entryRecord = gtk.Entry()
-    main.entryRecord.set_text("200")
+    main.entryRecord.set_text("1")
     main.entryRecord.show()
     main.tablePar.attach(labelrecord, 0, 2, 4, 5)
     main.tablePar.attach(main.entryRecord, 2, 4, 4, 5)    
