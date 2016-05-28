@@ -95,7 +95,8 @@ def on_redisplay(widget):
         SectionFilt.shape
     except NameError:
         SectionFilt = Section
-    
+        print "entre en el error de SectionFilt"
+
     # 3 PNG Files to display
     fig = plt.figure()
     ax = fig.add_subplot(111)
@@ -203,7 +204,7 @@ def on_buttonNext_clicked(widget):
     loadSegy.clicked()
 
 def on_buttonSlantStack_clicked(widget):
-    global Section, Offset, SectionTauPi, ns, Fold, nt, dt
+    global Section, Offset, SectionTauPi, SectionFilt, ns, Fold, nt, dt, p
     SectionTauPi = Section 
     # En esta funcion se recogeran los parametros suministrados por el usuario
     # para calcular el SlantStack y se desplegara el mismo en el area dibujable
@@ -220,13 +221,21 @@ def on_buttonSlantStack_clicked(widget):
     SectionLMO = lmo.gat_lmo(Section,Offset,p,dt)
     SectionTauPi = SectionLMO.T
     '''
-    p = np.linspace(0, 1.0/1000, num=nt)
+    p = np.linspace(0, 1.0/1000, num=Fold)
+    
+    #SectionTauPi = lmo.gat_lmo(Section,Offset,p,dt)
     SectionTauPi = lmo.stkgat_lmo(Section,Offset,p,dt)
     SectionTauPi = SectionTauPi.T
+
 
     # Aqui empiezas a programar la transformacion del CDP(tiempo, offset) a
     # CDP(tau,pi) --slantstack--. La NumpyMatrix que contiene el CDP(tau,pi)
     # se llamara SectionTauPi
+
+    SectionTauPinInv = lmo.stkgat_lmo_Inv(SectionTauPi,Offset,p,dt)
+
+    #SectionTauPinInv = lmo.gat_lmo_inv(SectionTauPi,Offset,p,dt)
+    SectionFilt = SectionTauPinInv.T
 
     on_redisplay(widget)
 
