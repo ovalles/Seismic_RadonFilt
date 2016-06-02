@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-# RADON FILTERING applied to Seismic Data
+# Taupi and RADON FILTERING applied to Seismic Data
 # by Asdrubal Ovalles, Luis Martinez, Ilich Garcia
-# 2016, April
+# 2016, April, Venezuela
 # ovallesa@me.com , 
 
 import pygtk
@@ -88,21 +88,31 @@ def on_redisplay(widget):
     try:
         SectionTauPi.shape
     except NameError:
-        SectionTauPi = Section
+        SectionTauPi = Section * 0
+	#p = Offset
 	#print "Entre a la excepcion"
 
     try:
         SectionFilt.shape
     except NameError:
-        SectionFilt = Section
+        SectionFilt = Section * 0
+        #print "entre en el error de SectionFilt"
+
+    try:
+        p.shape
+    except NameError:
+        p = np.linspace(0, 1.0/1000, num=Fold)
         #print "entre en el error de SectionFilt"
 
     # 3 PNG Files to display
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    ax.imshow(Section,extent=[Offset[0],Offset[Fold-1],int((ns-1)*dt),0], cmap='gray')
-    ax.set_xlim(Offset[0], Offset[Fold-1])
-    ax.set_aspect(0.5)
+    aspectoI = (Offset[len(Offset)-1]-Offset[0])/((ns-1)*dt)
+    ax.imshow(Section,extent=[Offset[0],Offset[Fold-1],int((ns-1)*dt),0], cmap='gray',
+              aspect=2)
+    
+    #ax.set_xlim(Offset[0], Offset[Fold-1])
+     #ax.set_aspect(0.5)
     #plt.colorbar()
     plt.title('Input CDP')    
     plt.xlabel('Offset [m]')
@@ -112,23 +122,26 @@ def on_redisplay(widget):
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    ax.imshow(SectionTauPi,extent=[Offset[0],Offset[Fold-1],int((ns-1)*dt),0]) 
-    ax.set_xlim(Offset[0], Offset[Fold-1])
-    ax.set_aspect(0.5)
+    aspectoF = (p[len(p)-1]-p[0])/((ns-1)*dt)
+    ax.imshow(SectionTauPi,extent=[p[0],p[len(p)-1],int((ns-1)*dt),0],
+              aspect=2*aspectoF)
+    #ax.set_xlim(Offset[0], Offset[Fold-1])
+    #ax.set_aspect(0.5)
     #plt.colorbar()
-    plt.title('Picking Filter Panel')    
-    plt.xlabel('Offset [m]')
+    plt.title('TauPi Picking Filter Panel')    
+    plt.xlabel('P [s/m]')
     plt.ylabel('Time [ms]')
     fig.savefig('Filter.png', bbox_inches='tight')
     fig.clf()
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    ax.imshow(SectionFilt,extent=[Offset[0],Offset[Fold-1],int((ns-1)*dt),0], cmap='gray')
-    ax.set_xlim(Offset[0], Offset[Fold-1])
-    ax.set_aspect(0.5)
+    ax.imshow(SectionFilt,extent=[Offset[0],Offset[Fold-1],int((ns-1)*dt),0], cmap='gray',
+              aspect=2)
+    #ax.set_xlim(Offset[0], Offset[Fold-1])
+    #ax.set_aspect(0.5)
     #plt.colorbar()
-    plt.title('Filtered CDP')    
+    plt.title('TauPi Inverse  CDP')    
     plt.xlabel('Offset [m]')
     plt.ylabel('Time [ms]')
     fig.savefig('Output.png', bbox_inches='tight')
@@ -188,8 +201,8 @@ def on_loadSegy_clicked(widget):
 
     Offset=read_segy.read_segy_offset(FileIn,Record,Fold)  #List containing the     
     #buttonFilter.clicked()
-    SectionTauPi = Section
-    SectionFilt = Section
+    SectionTauPi = Section * 0
+    SectionFilt = Section * 0
     on_redisplay(widget)
 
 
