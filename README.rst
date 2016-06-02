@@ -65,7 +65,7 @@ Videos and screenshots
 
 
 .. image:: https://github.com/ovalles/Seismic_RadonFilt/blob/master/80_SCREENSHOTS/01.png
-   :target: https://www.youtube.com/watch?v=bvje_Nt8wic&list=PL7t3mNvsiYoadSfsYG618LIlzkGzGqAf7
+
 =======
 License
 =======
