@@ -187,6 +187,9 @@ class LineBuilder:
         self.line = line
         self.xs = list(line.get_xdata())
         self.ys = list(line.get_ydata())
+        line.set_color('red')
+        line.set_linestyle('--')
+        line.set_linewidth(2.0)
         self.cid = line.figure.canvas.mpl_connect('button_press_event', self)
 
     def __call__(self, event):
