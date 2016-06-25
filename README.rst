@@ -56,7 +56,7 @@ Finally, enter the newly created directory containing the source code and run:
 
 ::
 
-$ python radon.py
+$ python taupi.py
 
 
 ===========
