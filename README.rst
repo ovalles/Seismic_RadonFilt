@@ -15,7 +15,7 @@ TauPI and Radon Transform of Seismic Data
 * Written in Python 2.7
 * It's still under construction
 * This repo contain a SEG-Y NMO-corrected CDP (synthetic) 
-* Be patient after pressing TauPi Transform, it's Time consuming (3 minutes for demo data)
+* Be patient after pressing TauPi Transform, it's Time consuming (1 minutes for demo data)
 .. contents:: **Table of Contents**
     :local:
     :backlinks: none
