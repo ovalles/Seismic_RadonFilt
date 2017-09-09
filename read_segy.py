@@ -11,7 +11,7 @@ import time
 def nsamp_segy(filein):
    file=open(filein, 'rb')
    bytepos=3220
-   file.seek(bytepos,0)
+   file.seek(int(bytepos),0)
    #nsamp=np.array(struct.unpack(('H'),file.read(2)))   #NATIVE ENDIANNES
    nsamp=np.array(struct.unpack(('>H'),file.read(2)))  # BIG-ENDIAN FILE
    file.close()
@@ -21,7 +21,7 @@ def nsamp_segy(filein):
 def dt_segy(filein):
    file=open(filein, 'rb')
    bytepos=3216
-   file.seek(bytepos,0)
+   file.seek(int(bytepos),0)
    dt=np.array(struct.unpack(('>H'),file.read(2)))
    file.close()
    #print dt
@@ -49,7 +49,7 @@ def read_segy(filein):
    while (j<nt-1):
       bytepos=3600+240*(j+1)+(4*ns*j)
       #print '',bytepos
-      file.seek(bytepos,0)
+      file.seek(int(bytepos),0)
       i=0
       while (i<=ns-1):
 #      y.append(struct.unpack(('f'),file.read(4)))   #Apendiza en listas
@@ -73,7 +73,7 @@ def read_segy_trunc(filein,nto,ntf,nso,nsf):
    while (j<ntf-1):
       bytepos=3600+240*(j+1)+(4*ns*j) + 4*nso
       #print '',bytepos
-      file.seek(bytepos,0)
+      file.seek(int(bytepos),0)
       i=nso
       while (i<=nsf-1):
 #      y.append(struct.unpack(('f'),file.read(4)))   #Apendiza en listas
@@ -100,7 +100,7 @@ def read_segy_record(filein,rec_num,fold):
    j=0
    while (j<fold):
       bytepos=bytepos_inic+240*(j+1)+(4*ns*j)
-      file.seek(bytepos,0)
+      file.seek(int(bytepos),0)
       i=0
       while (i<=ns-1):
 #      y.append(struct.unpack(('f'),file.read(4)))   #Apendiza en listas
@@ -128,7 +128,7 @@ def read_segy_offset(filein,rec_num,fold):
    j=0
    while (j<fold):
       bytepos=bytepos_inic+240*(j+1)+(4*ns*j)
-      file.seek(bytepos,0)
+      file.seek(int(bytepos),0)
       offset[j]=np.array(struct.unpack(('>i'),file.read(4)))
       j=j+1
    file.close()

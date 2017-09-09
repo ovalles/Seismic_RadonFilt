@@ -22,39 +22,39 @@ from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as Navig
 def trace_lmo(trace,Shift_nm,ns):
     if Shift_nm > ns:
        Shift_nm = ns-1 
-    tracelmo=trace[Shift_nm:ns]
-    tracelmo = np.append(tracelmo,np.zeros(Shift_nm))
+    tracelmo=trace[int(Shift_nm):int(ns)]
+    tracelmo = np.append(tracelmo,np.zeros(int(Shift_nm)))
     return tracelmo
 
 def gather_lmo(section,Shift_nm,ns):
     nt = len(section[0,:])
-    gatherlmo = np.zeros([ns,nt])
+    gatherlmo = np.zeros([int(ns),int(nt)])
     for trace in range(0,len(Shift_nm)):
 	gatherlmo[:,trace] = trace_lmo(section[:,trace],Shift_nm[trace],ns)
     return gatherlmo
 
 def gathers_lmo(section,Shift_nm,ns): #section y Shift_nm (matrices) y ns escalar
     nt = len(section[0,:])
-    gatherslmo = np.zeros([ns,nt,len(Shift_nm[0,:])])
+    gatherslmo = np.zeros([int(ns),int(nt),len(Shift_nm[0,:])])
     for trace in range (0, len(Shift_nm[0,:])):
         gatherslmo[:,:,trace] = gather_lmo(section,Shift_nm[:,trace],ns) #gatherslmo (cubo matricial)
     return gatherslmo
 
 def trace_invlmo(trace,Shift_nm,ns): #trace(vector), Shift_nm y ns (escalar)
-    trace=np.append(np.zeros(Shift_nm),trace) # anado zeros por arriba
-    traceinvlmo=trace[0:ns] #mantengo dimensiones
+    trace=np.append(np.zeros(int(Shift_nm)),trace) # anado zeros por arriba
+    traceinvlmo=trace[0:int(ns)] #mantengo dimensiones
     return traceinvlmo
 
 def gather_invlmo(section,Shift_nm,ns): #section (matriz), Shift_nm (vector), ns (escalar)
     nt = len(section[0,:])
-    gatherinvlmo = np.zeros([ns,nt])
+    gatherinvlmo = np.zeros([int(ns),int(nt)])
     for trace in range(0,len(Shift_nm)):
 	    gatherinvlmo[:,trace] = trace_invlmo(section[:,trace],Shift_nm[trace],ns)
     return gatherinvlmo
 
 def gathersinv_lmo(section,Shift_nm,ns): #section y Shift_nm (matrices) y ns escalar
     nt = len(section[0,:])
-    gathersinvlmo = np.zeros([ns,nt,len(Shift_nm[0,:])])
+    gathersinvlmo = np.zeros([int(ns),int(nt),len(Shift_nm[0,:])])
     for trace in range (0, len(Shift_nm[0,:])):
         gathersinvlmo[:,:,trace] = gather_invlmo(section,Shift_nm[:,trace],ns) #gatherslmo (cubo matricial)
     return gathersinvlmo
@@ -187,7 +187,7 @@ class LineBuilder:
         self.line = line
         self.xs = list(line.get_xdata())
         self.ys = list(line.get_ydata())
-        line.set_color('red')
+        line.set_color('magenta')
         line.set_linestyle('--')
         line.set_linewidth(2.0)
         self.cid = line.figure.canvas.mpl_connect('button_press_event', self)
@@ -316,7 +316,7 @@ def on_buttonFilter_clicked(widget):
     if len(coords) == 2:
         SectionTauPiMute = SectionTauPi #The user pick nothing. :/ AJ
     else:
-        SectionTauPiMute = mutefilt(SectionTauPi,coords,ns,nt)
+        SectionTauPiMute = mutefilt(SectionTauPi,coords,int(ns),int(nt))
     
     GathersinvLMO = gathersinv_lmo(SectionTauPiMute,shift_nm,ns)
 
